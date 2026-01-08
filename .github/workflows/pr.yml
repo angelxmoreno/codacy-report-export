@@ -15,6 +15,9 @@ jobs:
     name: Test on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
+    env:
+      SHOULD_CODECOV_RUN: ${{ secrets.CODECOV_TOKEN != '' }}
+      SHOULD_CODACY_RUN: ${{ secrets.CODACY_PROJECT_TOKEN != '' }}
 
     strategy:
       matrix:
@@ -51,7 +54,7 @@ jobs:
         run: bun run test:coverage
 
       - name: Upload coverage to Codecov
-        if: ${{ !cancelled() && secrets.CODECOV_TOKEN != '' }}
+        if: ${{ !cancelled() && env.SHOULD_CODECOV_RUN == 'true' }}
         uses: codecov/codecov-action@v5
         with:
           files: ./coverage/lcov.info
@@ -60,7 +63,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload coverage to Codacy
-        if: ${{ !cancelled() && secrets.CODACY_PROJECT_TOKEN != '' }}
+        if: ${{ !cancelled() && env.SHOULD_CODACY_RUN == 'true' }}
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
