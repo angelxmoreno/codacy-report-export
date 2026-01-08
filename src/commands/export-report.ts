@@ -1,13 +1,8 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
-import { type Command, InvalidArgumentError, Option } from 'commander';
-import pino from 'pino';
+import { InvalidArgumentError, Option } from 'commander';
 import { z } from 'zod';
-
-const logger = pino({
-    level: process.env.LOG_LEVEL ?? 'info',
-    name: 'codacy-report-export',
-});
+import type { SharedCommandParams } from '../types.ts';
 
 const outputFormatSchema = z.enum(['json', 'prompt']);
 
@@ -22,7 +17,7 @@ const cliOptionsSchema = z.object({
 
 type CliOptions = z.infer<typeof cliOptionsSchema>;
 
-export function registerExportCommand(program: Command) {
+export function registerExportCommand({ program, logger }: SharedCommandParams) {
     program
         .command('export')
         .description('Export Codacy PR issues into a structured report.')
@@ -101,7 +96,7 @@ async function generatePlaceholderReport(options: CliOptions) {
         const absolutePath = path.resolve(process.cwd(), options.output);
         await fs.mkdir(path.dirname(absolutePath), { recursive: true });
         await fs.writeFile(absolutePath, payload, 'utf-8');
-        logger.info({ output: absolutePath }, 'Codacy report written');
+        // logger.info({ output: absolutePath }, 'Codacy report written');
         return;
     }
 

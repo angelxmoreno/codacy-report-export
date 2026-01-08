@@ -19,6 +19,7 @@
     },
     "homepage": "https://github.com/angelxmoreno/codacy-report-export",
     "scripts": {
+        "dev": "bun src/index.ts",
         "build": "bun build ./src/index.ts --compile --outfile dist/codacy-report-export",
         "prepare": "lefthook install",
         "test": "bun test",
