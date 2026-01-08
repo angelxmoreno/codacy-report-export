@@ -30,4 +30,6 @@ Authentication depends on `CODACY_ACCOUNT_TOKEN`; export it in your shell (`expo
 
 ## Agent Execution Principles
 
-Before editing files or rerouting workflows, confirm intent with the requester and avoid filling gaps with assumptions (flags, directory layouts, third-party integrations, etc.). When requirements are ambiguous, pause to ask clarifying questions and document the open decisions in the PR or discussion so reviewers can course-correct early.
+Before editing files or rerouting workflows, confirm intent with the requester and avoid filling gaps with assumptions
+(flags, directory layouts, third-party integrations, etc.). When requirements are ambiguous, pause to ask clarifying
+questions and document the open decisions in the PR or discussion so reviewers can course-correct early.

@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "type": "module",
     "bin": {
-        "codacy-report-export": "./dist/codacy-report-export"
+        "codacy-report-export": "./dist/codacy-report-export.js"
     },
     "files": [
         "dist",
@@ -20,7 +20,7 @@
     "homepage": "https://github.com/angelxmoreno/codacy-report-export",
     "scripts": {
         "dev": "bun src/index.ts",
-        "build": "bun build ./src/index.ts --compile --outfile dist/codacy-report-export",
+        "build": "bun build ./src/index.ts --target node --outfile dist/codacy-report-export.js",
         "prepare": "lefthook install",
         "test": "bun test",
         "test:coverage": "bun test --coverage --coverage-reporter=lcov",

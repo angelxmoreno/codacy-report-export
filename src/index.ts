@@ -2,7 +2,7 @@
 
 import { Command } from 'commander';
 import { registerExportCommand } from './commands/export-report';
-import { createLogger } from './utils/createLogger.ts';
+import { createLogger } from './utils/createLogger';
 
 const cliLogger = createLogger().child({
     name: 'codacy-report-export',
@@ -25,17 +25,22 @@ program.exitOverride();
 
 try {
     await program.parseAsync(process.argv);
-    process.exit(0);
 } catch (error: unknown) {
+    let handled = false;
     if (error instanceof Error && 'code' in error) {
-        if (error.code === 'commander.help' || error.code === 'commander.helpDisplayed') {
-            process.exit(0);
-        }
-        if (error.code === 'commander.version') {
-            process.exit(0);
+        const { code } = error;
+        if (code === 'commander.help' || code === 'commander.helpDisplayed' || code === 'commander.version') {
+            handled = true;
+            if (process.exitCode === undefined) {
+                process.exitCode = 0;
+            }
         }
     }
 
-    cliLogger.error(error, '❌ CLI Error:');
-    process.exit(1);
+    if (!handled) {
+        cliLogger.error(error, '❌ CLI Error:');
+        if (process.exitCode === undefined) {
+            process.exitCode = 1;
+        }
+    }
 }
