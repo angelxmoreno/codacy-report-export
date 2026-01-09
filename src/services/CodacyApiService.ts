@@ -1,7 +1,8 @@
 import { type AxiosInstance, type AxiosRequestConfig, isAxiosError } from 'axios';
 import type { Logger } from 'pino';
+import { ZodError, type z } from 'zod';
 import { CodacyApiServiceError } from '../errors/CodacyApiServiceError';
-import type { ApiUser, ApiUserResponse } from '../schemas/api/ApiUserSchema';
+import { type ApiUser, type ApiUserResponse, ApiUserResponseSchema } from '../schemas/api/ApiUserSchema';
 import { CodacyApiServiceConfigSchema } from '../schemas/CodacyApiServiceConfigSchema';
 import type { CodacyApiServiceConfig } from '../types';
 
@@ -18,7 +19,7 @@ export class CodacyApiService {
         this.apiToken = apiToken;
     }
 
-    protected async request<T = unknown>(config: AxiosRequestConfig): Promise<T> {
+    protected async request<T = unknown>(config: AxiosRequestConfig, schema?: z.ZodType<T>): Promise<T> {
         const requestConfig: AxiosRequestConfig = {
             ...config,
             method: config.method ?? 'GET',
@@ -30,6 +31,8 @@ export class CodacyApiService {
             },
         };
         this.logger.debug(requestConfig, 'Calling Codacy API');
+        let responseBody: T | null = null;
+
         try {
             const { data } = await this.httpClient.request<T>({
                 ...requestConfig,
@@ -38,27 +41,24 @@ export class CodacyApiService {
                     'api-token': this.apiToken,
                 },
             });
-
-            return data;
+            responseBody = data;
+            return schema ? schema.parse(responseBody) : responseBody;
         } catch (error) {
-            if (isAxiosError(error)) {
-                this.logger.error(
-                    {
-                        status: error.status,
-                        request: requestConfig,
-                        responseData: error.response?.data,
-                    },
-                    'Error from Codacy API'
-                );
+            let exception: CodacyApiServiceError;
 
-                throw CodacyApiServiceError.fromAxiosError(error);
+            if (error instanceof ZodError) {
+                exception = CodacyApiServiceError.fromZodError(error, requestConfig, responseBody);
+            } else if (isAxiosError(error)) {
+                exception = CodacyApiServiceError.fromAxiosError(error);
+            } else {
+                exception = new CodacyApiServiceError('Error calling Codacy API', {
+                    cause: error,
+                    status: 400,
+                });
             }
-
-            this.logger.error({ requestConfig, error }, 'Error calling Codacy API');
-            throw new CodacyApiServiceError('Error calling Codacy API', {
-                cause: error,
-                status: 400,
-            });
+            const { message, context } = exception.getLogData();
+            this.logger.error(context, message);
+            throw exception;
         }
     }
 }
