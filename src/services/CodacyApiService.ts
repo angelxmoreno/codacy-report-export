@@ -2,8 +2,50 @@ import { type AxiosInstance, type AxiosRequestConfig, isAxiosError } from 'axios
 import type { Logger } from 'pino';
 import { ZodError, type z } from 'zod';
 import { CodacyApiServiceError } from '../errors/CodacyApiServiceError';
+import { type PaginatedApiOrganization, PaginatedApiOrganizationSchema } from '../schemas/api/ApiOrganizationSchema';
+import {
+    type ApiPullRequestIssuesResponse,
+    ApiPullRequestIssuesResponseSchema,
+} from '../schemas/api/ApiPullRequestIssuesResponseSchema';
+import {
+    type ApiPullRequestWithAnalysis,
+    ApiPullRequestWithAnalysisSchema,
+} from '../schemas/api/ApiPullRequestWithAnalysisSchema';
+import {
+    type PaginatedApiRepositoryBranch,
+    PaginatedApiRepositoryBranchSchema,
+} from '../schemas/api/ApiRepositoryBranchSchema';
+import {
+    type PaginatedApiRepositoryPullRequest,
+    PaginatedApiRepositoryPullRequestSchema,
+} from '../schemas/api/ApiRepositoryPullRequestSchema';
+import { type PaginatedApiRepository, PaginatedApiRepositorySchema } from '../schemas/api/ApiRepositorySchema';
 import { type ApiUser, type ApiUserResponse, ApiUserResponseSchema } from '../schemas/api/ApiUserSchema';
 import { CodacyApiServiceConfigSchema } from '../schemas/CodacyApiServiceConfigSchema';
+import {
+    type GetRepositoryPullRequestParams,
+    GetRepositoryPullRequestParamsSchema,
+} from '../schemas/methods/GetRepositoryPullRequestParamsSchema';
+import {
+    type ListOrganizationsParams,
+    ListOrganizationsParamsSchema,
+} from '../schemas/methods/ListOrganizationsParamsSchema';
+import {
+    type ListPullRequestIssuesParams,
+    ListPullRequestIssuesParamsSchema,
+} from '../schemas/methods/ListPullRequestIssuesParamsSchema';
+import {
+    type ListRepositoriesParams,
+    ListRepositoriesParamsSchema,
+} from '../schemas/methods/ListRepositoriesParamsSchema';
+import {
+    type ListRepositoryBranchesParams,
+    ListRepositoryBranchesParamsSchema,
+} from '../schemas/methods/ListRepositoryBranchesParamsSchema';
+import {
+    type ListRepositoryPullRequestsParams,
+    ListRepositoryPullRequestsParamsSchema,
+} from '../schemas/methods/ListRepositoryPullRequestsParamsSchema';
 import type { CodacyApiServiceConfig } from '../types';
 
 export class CodacyApiService {
@@ -57,7 +99,8 @@ export class CodacyApiService {
                 });
             }
             const { message, context } = exception.getLogData();
-            this.logger.error(context, message);
+            const { status, validationIssues } = context;
+            this.logger.error({ status, validationIssues }, message);
             throw exception;
         }
     }
@@ -71,5 +114,76 @@ export class CodacyApiService {
         );
 
         return data;
+    }
+
+    async listOrganizations(options: ListOrganizationsParams): Promise<PaginatedApiOrganization> {
+        const { provider, ...params } = ListOrganizationsParamsSchema.parse(options);
+        return await this.request<PaginatedApiOrganization>(
+            {
+                url: `/user/organizations/${provider}`,
+                params,
+            },
+            PaginatedApiOrganizationSchema
+        );
+    }
+
+    async listRepositories(options: ListRepositoriesParams): Promise<PaginatedApiRepository> {
+        const { provider, remoteOrganizationName, ...params } = ListRepositoriesParamsSchema.parse(options);
+        return this.request<PaginatedApiRepository>(
+            {
+                url: `/organizations/${provider}/${remoteOrganizationName}/repositories`,
+                params,
+            },
+            PaginatedApiRepositorySchema
+        );
+    }
+
+    async listRepositoryBranches(options: ListRepositoryBranchesParams): Promise<PaginatedApiRepositoryBranch> {
+        const { provider, remoteOrganizationName, repositoryName, ...params } =
+            ListRepositoryBranchesParamsSchema.parse(options);
+        return this.request<PaginatedApiRepositoryBranch>(
+            {
+                url: `/organizations/${provider}/${remoteOrganizationName}/repositories/${repositoryName}/branches`,
+                params,
+            },
+            PaginatedApiRepositoryBranchSchema
+        );
+    }
+
+    async listRepositoryPullRequests(
+        options: ListRepositoryPullRequestsParams
+    ): Promise<PaginatedApiRepositoryPullRequest> {
+        const { provider, remoteOrganizationName, repositoryName, ...params } =
+            ListRepositoryPullRequestsParamsSchema.parse(options);
+        return this.request<PaginatedApiRepositoryPullRequest>(
+            {
+                url: `/analysis/organizations/${provider}/${remoteOrganizationName}/repositories/${repositoryName}/pull-requests`,
+                params,
+            },
+            PaginatedApiRepositoryPullRequestSchema
+        );
+    }
+
+    async getRepositoryPullRequest(options: GetRepositoryPullRequestParams): Promise<ApiPullRequestWithAnalysis> {
+        const { provider, remoteOrganizationName, repositoryName, pullRequestNumber } =
+            GetRepositoryPullRequestParamsSchema.parse(options);
+        return this.request(
+            {
+                url: `/analysis/organizations/${provider}/${remoteOrganizationName}/repositories/${repositoryName}/pull-requests/${pullRequestNumber}`,
+            },
+            ApiPullRequestWithAnalysisSchema
+        );
+    }
+
+    async listPullRequestIssues(options: ListPullRequestIssuesParams): Promise<ApiPullRequestIssuesResponse> {
+        const { provider, remoteOrganizationName, repositoryName, pullRequestNumber, ...params } =
+            ListPullRequestIssuesParamsSchema.parse(options);
+        return this.request(
+            {
+                url: `/analysis/organizations/${provider}/${remoteOrganizationName}/repositories/${repositoryName}/pull-requests/${pullRequestNumber}/issues`,
+                params,
+            },
+            ApiPullRequestIssuesResponseSchema
+        );
     }
 }
