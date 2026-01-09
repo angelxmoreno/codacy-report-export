@@ -7,6 +7,7 @@ type CodacyApiServiceErrorOptions = ErrorOptions & {
     validationIssues?: z.core.$ZodIssue[];
     status: number;
 };
+
 export class CodacyApiServiceError extends Error {
     static ERROR_ZOD_MSG = 'Invalid response from Codacy API';
     static ERROR_API_MSG = 'Error from Codacy API';

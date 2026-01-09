@@ -61,4 +61,15 @@ export class CodacyApiService {
             throw exception;
         }
     }
+
+    async getCurrentUser(): Promise<ApiUser> {
+        const { data } = await this.request<ApiUserResponse>(
+            {
+                url: '/user',
+            },
+            ApiUserResponseSchema
+        );
+
+        return data;
+    }
 }

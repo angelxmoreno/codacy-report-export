@@ -2,6 +2,7 @@
 
 import { Command } from 'commander';
 import { registerExportCommand } from './commands/export-report';
+import { registerTestApi } from './commands/test-api';
 import { createLogger } from './utils/createLogger';
 
 const cliLogger = createLogger().child({
@@ -20,6 +21,7 @@ program.option('-d, --debug', 'output extra debugging information').hook('preAct
 });
 
 registerExportCommand({ program, logger: cliLogger });
+registerTestApi({ program, logger: cliLogger });
 
 program.exitOverride();
 
