@@ -1,11 +1,11 @@
-import axios from 'axios';
 import Table from 'cli-table3';
 import type { Logger } from 'pino';
+import { CodacyApiServiceFactory } from '../factories/CodacyApiServiceFactory';
 import {
     type ListOrganizationsParams,
     ListOrganizationsParamsSchema,
 } from '../schemas/methods/ListOrganizationsParamsSchema';
-import { CodacyApiService } from '../services/CodacyApiService';
+import type { CodacyApiService } from '../services/CodacyApiService';
 import type { SharedCommandParams } from '../types';
 import { applyZodOptions } from '../utils/applyZodOptions';
 
@@ -48,12 +48,7 @@ export function listOrganizationsCommand({ program, logger }: SharedCommandParam
     cmd.description('List organizations for a provider');
     applyZodOptions(cmd, ListOrganizationsParamsSchema);
     cmd.action(async (params) => {
-        const service = new CodacyApiService({
-            logger,
-            apiToken: String(Bun.env.CODACY_ACCOUNT_TOKEN),
-            httpClient: axios.create(),
-        });
-
+        const service = CodacyApiServiceFactory({ logger });
         const table = await listOrganizationsAction({ service, params, logger });
         console.log(table.toString());
     });

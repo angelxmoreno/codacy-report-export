@@ -1,8 +1,12 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { registerExportCommand } from './commands/export-report';
+import { getRepositoryPullRequestCommand } from './commands/getRepositoryPullRequest';
 import { listOrganizationsCommand } from './commands/listOrganizations';
+import { listPullRequestIssuesCommand } from './commands/listPullRequestIssues';
+import { listRepositoriesCommand } from './commands/listRepositories';
+import { listRepositoryBranchesCommand } from './commands/listRepositoryBranches';
+import { listRepositoryPullRequestsCommand } from './commands/listRepositoryPullRequests';
 import { registerTestApi } from './commands/test-api';
 import { createLogger } from './utils/createLogger';
 
@@ -21,9 +25,13 @@ program.option('-d, --debug', 'output extra debugging information').hook('preAct
     }
 });
 
-registerExportCommand({ program, logger: cliLogger });
 registerTestApi({ program, logger: cliLogger });
 listOrganizationsCommand({ program, logger: cliLogger });
+listRepositoriesCommand({ program, logger: cliLogger });
+listRepositoryBranchesCommand({ program, logger: cliLogger });
+listRepositoryPullRequestsCommand({ program, logger: cliLogger });
+getRepositoryPullRequestCommand({ program, logger: cliLogger });
+listPullRequestIssuesCommand({ program, logger: cliLogger });
 
 program.exitOverride();
 
