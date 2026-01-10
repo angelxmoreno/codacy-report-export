@@ -2,6 +2,7 @@
 
 import { Command } from 'commander';
 import { registerExportCommand } from './commands/export-report';
+import { listOrganizationsCommand } from './commands/listOrganizations';
 import { registerTestApi } from './commands/test-api';
 import { createLogger } from './utils/createLogger';
 
@@ -22,6 +23,7 @@ program.option('-d, --debug', 'output extra debugging information').hook('preAct
 
 registerExportCommand({ program, logger: cliLogger });
 registerTestApi({ program, logger: cliLogger });
+listOrganizationsCommand({ program, logger: cliLogger });
 
 program.exitOverride();
 
