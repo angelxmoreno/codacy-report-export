@@ -33,6 +33,7 @@ describe('ListOrganizationsCommand', () => {
                 logger: mockLogger,
                 apiToken: 'test-token',
                 httpClient: mockHttpClient,
+                baseUrl: 'https://api.codacy.com/api/v3',
             });
             const params: ListOrganizationsActionParams = {
                 logger: mockLogger,
@@ -70,6 +71,7 @@ describe('ListOrganizationsCommand', () => {
                 logger: mockLogger,
                 apiToken: 'test-token',
                 httpClient: mockHttpClient,
+                baseUrl: 'https://api.codacy.com/api/v3',
             });
             const params: ListOrganizationsActionParams = {
                 logger: mockLogger,

@@ -41,9 +41,9 @@ describe('ListRepositoryPullRequestsCommand', () => {
                 logger: mockLogger,
                 apiToken: 'test-token',
                 httpClient: mockHttpClient,
+                baseUrl: 'https://api.codacy.com/api/v3',
             });
             const params: ListRepositoryPullRequestsActionParams = {
-                logger: mockLogger,
                 service,
                 params: {
                     remoteOrganizationName: 'org',

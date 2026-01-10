@@ -12,5 +12,5 @@ export const CodacyApiServiceConfigSchema = z.object({
         message: 'A valid Pino Logger instance is required.',
     }),
     apiToken: z.string(),
-    baseUrl: z.url().default('https://api.codacy.com/api/v3').optional(),
+    baseUrl: z.url().default('https://api.codacy.com/api/v3'),
 });

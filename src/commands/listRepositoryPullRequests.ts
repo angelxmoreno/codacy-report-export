@@ -1,5 +1,4 @@
 import Table from 'cli-table3';
-import type { Logger } from 'pino';
 import { CodacyApiServiceFactory } from '../factories/CodacyApiServiceFactory';
 import {
     type ListRepositoryPullRequestsParams,
@@ -10,7 +9,6 @@ import type { SharedCommandParams } from '../types';
 import { applyZodOptions } from '../utils/applyZodOptions';
 
 export type ListRepositoryPullRequestsActionParams = {
-    logger: Logger;
     params: ListRepositoryPullRequestsParams;
     service: CodacyApiService;
 };
@@ -49,7 +47,7 @@ export function listRepositoryPullRequestsCommand({ program, logger }: SharedCom
     applyZodOptions(cmd, ListRepositoryPullRequestsParamsSchema);
     cmd.action(async (params) => {
         const service = CodacyApiServiceFactory({ logger });
-        const table = await listRepositoryPullRequestsAction({ service, params, logger });
+        const table = await listRepositoryPullRequestsAction({ service, params });
         console.log(table.toString());
     });
 }

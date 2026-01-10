@@ -7,7 +7,7 @@ We are transitioning from a single CLI prototype into a monorepo that houses a C
 ## Phases
 
 1. **Finish Current Branch**
-   * Implement only the API calls required for the MVP exporter (user lookup, repository scoped issues, PR issues).
+   * Implement only the API calls required for the MVP exporter (user lookup, repository-scoped issues, PR issues).
    * Open a PR to get the foundational service, schemas, and CLI plumbing merged quickly.
    * Rationale: unblock downstream work, avoid letting the branch accumulate unrelated scope.
 

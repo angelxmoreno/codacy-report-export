@@ -49,16 +49,17 @@ import {
 import type { CodacyApiServiceConfig } from '../types';
 
 export class CodacyApiService {
-    protected baseUrl = 'https://api.codacy.com/api/v3';
+    protected baseUrl: string;
     protected logger: Logger;
     protected httpClient: AxiosInstance;
     protected apiToken: string;
 
     constructor(config: CodacyApiServiceConfig) {
-        const { logger, httpClient, apiToken } = CodacyApiServiceConfigSchema.parse(config);
+        const { logger, httpClient, apiToken, baseUrl } = CodacyApiServiceConfigSchema.parse(config);
         this.logger = logger;
         this.httpClient = httpClient;
         this.apiToken = apiToken;
+        this.baseUrl = baseUrl;
     }
 
     protected async request<T = unknown>(config: AxiosRequestConfig, schema?: z.ZodType<T>): Promise<T> {

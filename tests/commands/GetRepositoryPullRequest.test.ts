@@ -36,6 +36,7 @@ describe('GetRepositoryPullRequestCommand', () => {
                 logger: mockLogger,
                 apiToken: 'test-token',
                 httpClient: mockHttpClient,
+                baseUrl: 'https://api.codacy.com/api/v3',
             });
             const params: GetRepositoryPullRequestActionParams = {
                 logger: mockLogger,

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 import { AxiosError, type AxiosRequestHeaders, type InternalAxiosRequestConfig } from 'axios';
-import { ZodError } from 'zod';
+import { z } from 'zod';
 import { CodacyApiServiceError } from '../../src/errors/CodacyApiServiceError';
 
 describe('CodacyApiServiceError', () => {
@@ -37,13 +37,16 @@ describe('CodacyApiServiceError', () => {
     });
 
     it('should create from Zod error', () => {
-        const mockZodError = new ZodError([
-            {
-                code: 'custom',
-                message: 'Invalid type',
-                path: [],
-            },
-        ]);
+        const mockSchema = z.object({
+            id: z.number(),
+        });
+        let mockZodError: z.ZodError;
+        try {
+            mockSchema.parse({ id: 'oops' });
+            throw new Error('Expected parse to fail');
+        } catch (error) {
+            mockZodError = error as z.ZodError;
+        }
 
         const error = CodacyApiServiceError.fromZodError(mockZodError, {}, { data: 'bad' });
         expect(error.message).toBe(CodacyApiServiceError.ERROR_ZOD_MSG);

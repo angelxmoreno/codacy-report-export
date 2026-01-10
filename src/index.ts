@@ -8,7 +8,6 @@ import { listPullRequestIssuesCommand } from './commands/listPullRequestIssues';
 import { listRepositoriesCommand } from './commands/listRepositories';
 import { listRepositoryBranchesCommand } from './commands/listRepositoryBranches';
 import { listRepositoryPullRequestsCommand } from './commands/listRepositoryPullRequests';
-import { registerTestApi } from './commands/test-api';
 import { createLogger } from './utils/createLogger';
 
 const cliLogger = createLogger().child({
@@ -26,7 +25,6 @@ program.option('-d, --debug', 'output extra debugging information').hook('preAct
     }
 });
 
-registerTestApi({ program, logger: cliLogger });
 listOrganizationsCommand({ program, logger: cliLogger });
 listRepositoriesCommand({ program, logger: cliLogger });
 listRepositoryBranchesCommand({ program, logger: cliLogger });

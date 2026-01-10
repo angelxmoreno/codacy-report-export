@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 export const ApiPaginationSchema = z.object({
     cursor: z.string().optional(),
-    limit: z.number(),
-    total: z.number().optional(),
+    limit: z.number().int().min(1),
+    total: z.number().int().min(0).optional(),
 });
 
 export type ApiPagination = z.infer<typeof ApiPaginationSchema>;

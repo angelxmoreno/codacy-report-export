@@ -82,9 +82,9 @@ The tool uses a stateless **Reporter Architecture**, allowing data to be transfo
 * `json`: Raw issue data in a clean JSON array.
 * `junit`: standard XML format compatible with CI/CD dashboards (Jenkins, GitHub Actions, etc.).
 
-### 3rd Party Reporters (Coming Soon)
+### 3rd-Party Reporters (Coming Soon)
 
-The architecture is designed to support 3rd party plugins. Developers will soon be able to register custom reporters by implementing the `ReporterInterface`.
+The architecture is designed to support 3rd-party plugins. Developers will soon be able to register custom reporters by implementing the `ReporterInterface`.
 
 ***
 

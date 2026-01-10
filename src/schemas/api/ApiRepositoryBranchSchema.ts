@@ -13,5 +13,5 @@ export const ApiRepositoryBranchSchema = z.object({
 
 export const PaginatedApiRepositoryBranchSchema = createPaginatedSchema(ApiRepositoryBranchSchema);
 
-export type ApiRepositoryBranchS = z.infer<typeof ApiRepositoryBranchSchema>;
+export type ApiRepositoryBranch = z.infer<typeof ApiRepositoryBranchSchema>;
 export type PaginatedApiRepositoryBranch = z.infer<typeof PaginatedApiRepositoryBranchSchema>;
