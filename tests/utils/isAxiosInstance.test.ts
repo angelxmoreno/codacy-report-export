@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 import { isAxiosInstance } from '../../src/utils/isAxiosInstance';
+import { createMockHttpClient } from '../helpers/createMockHttpClient';
 
 describe('isAxiosInstance', () => {
     it('should return false for null or undefined', () => {
@@ -25,9 +26,7 @@ describe('isAxiosInstance', () => {
     });
 
     it('should return true for an object with a request function', () => {
-        const mockAxios = {
-            request: () => {},
-        };
+        const mockAxios = createMockHttpClient();
         expect(isAxiosInstance(mockAxios)).toBe(true);
     });
 });

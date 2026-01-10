@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 import { isPinoLogger } from '../../src/utils/isPinoLogger';
+import { createMockLogger } from '../helpers/createMockLogger';
 
 describe('isPinoLogger', () => {
     it('should return false for null or undefined', () => {
@@ -67,13 +68,7 @@ describe('isPinoLogger', () => {
     });
 
     it('should return true for a valid logger object', () => {
-        const mockLogger = {
-            child: () => {},
-            debug: () => {},
-            info: () => {},
-            warn: () => {},
-            error: () => {},
-        };
+        const mockLogger = createMockLogger();
         expect(isPinoLogger(mockLogger)).toBe(true);
     });
 });
