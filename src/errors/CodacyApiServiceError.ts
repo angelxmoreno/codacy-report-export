@@ -8,6 +8,10 @@ type CodacyApiServiceErrorOptions = ErrorOptions & {
     status: number;
 };
 
+export const isCodacyApiServiceError = (error: unknown): error is CodacyApiServiceError => {
+    return error instanceof CodacyApiServiceError;
+};
+
 export class CodacyApiServiceError extends Error {
     static ERROR_ZOD_MSG = 'Invalid response from Codacy API';
     static ERROR_API_MSG = 'Error from Codacy API';
