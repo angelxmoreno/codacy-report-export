@@ -33,7 +33,7 @@ export class CodacyApiServiceError extends Error {
     static fromAxiosError(e: AxiosError) {
         return new CodacyApiServiceError(CodacyApiServiceError.ERROR_API_MSG, {
             cause: e,
-            status: e.response?.status || e.status || 500,
+            status: e.response?.status ?? e.status ?? 500,
             responseBody: e.response?.data,
             requestConfig: e.config,
         });

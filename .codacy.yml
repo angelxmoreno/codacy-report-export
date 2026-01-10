@@ -1,5 +1,22 @@
 ---
 engines:
+  eslint:
+    enabled: true
+    patterns:
+      ESLint8_no-unused-vars:
+        enabled: false
+      ESLint8_@typescript-eslint_consistent-type-definitions:
+        enabled: false
+      ESLint8_security_detect-object-injection:
+        enabled: false
+      ESLint8_xss_no-mixed-html:
+        enabled: false
+      ESLint8_@typescript-eslint_no-unnecessary-condition:
+        enabled: false
+      ESLint8_@typescript-eslint_restrict-template-expressions:
+        enabled: false
+      ESLint8_security_detect-non-literal-fs-filename:
+        enabled: false
   markdownlint:
     enabled: false
   remark-lint:

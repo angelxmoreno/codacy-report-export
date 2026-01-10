@@ -16,7 +16,7 @@ export function applyZodOptions<T extends z.ZodRawShape>(
     const { shape } = schema;
 
     for (const [key, zodType] of Object.entries(shape)) {
-        let type: z.ZodTypeAny = zodType as z.ZodTypeAny;
+        let type = zodType;
         let isOptional = false;
 
         while (type instanceof z.ZodOptional || type instanceof z.ZodNullable) {
@@ -26,7 +26,11 @@ export function applyZodOptions<T extends z.ZodRawShape>(
 
         // Determine the flag format (camelCase key -> kebab-case flag)
         const flagName = key.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`);
-        const description = descriptions[key] || (type.description ?? `Filter by ${key}`);
+        const schemaDescription =
+            'description' in type && typeof (type as { description?: unknown }).description === 'string'
+                ? (type as { description: string }).description
+                : undefined;
+        const description = descriptions[key] || schemaDescription || `Filter by ${key}`;
 
         // Helper to check for ZodDefault
         let isDefault = false;

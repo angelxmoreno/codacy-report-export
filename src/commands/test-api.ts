@@ -35,7 +35,9 @@ export const testApiCall = async (logger: Logger) => {
         remoteOrganizationName: repo.owner,
         repositoryName: repo.name,
     });
-    prsResponse.data.map((d) => console.log(`pr# ${d.pullRequest.number}`));
+    prsResponse.data.forEach((d) => {
+        console.log(`pr# ${d.pullRequest.number}`);
+    });
     const pr = prsResponse.data[0];
     if (!pr) {
         logger.info(prsResponse, 'no prs found');
