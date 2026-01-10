@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
+import { exportPrIssuesCommand } from './commands/export-pr-issues';
 import { getRepositoryPullRequestCommand } from './commands/getRepositoryPullRequest';
 import { listOrganizationsCommand } from './commands/listOrganizations';
 import { listPullRequestIssuesCommand } from './commands/listPullRequestIssues';
@@ -32,6 +33,7 @@ listRepositoryBranchesCommand({ program, logger: cliLogger });
 listRepositoryPullRequestsCommand({ program, logger: cliLogger });
 getRepositoryPullRequestCommand({ program, logger: cliLogger });
 listPullRequestIssuesCommand({ program, logger: cliLogger });
+exportPrIssuesCommand({ program, logger: cliLogger });
 
 program.exitOverride();
 

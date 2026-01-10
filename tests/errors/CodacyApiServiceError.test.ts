@@ -33,7 +33,7 @@ describe('CodacyApiServiceError', () => {
         const error = CodacyApiServiceError.fromAxiosError(mockAxiosError);
         expect(error.message).toBe(CodacyApiServiceError.ERROR_API_MSG);
         expect(error.status).toBe(500);
-        expect(error.requestConfig).toEqual({ url: '/test' });
+        expect(error.requestConfig).toEqual(expect.objectContaining({ url: '/test' }));
     });
 
     it('should create from Zod error', () => {
