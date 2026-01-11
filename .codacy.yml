@@ -2,6 +2,15 @@
 engines:
   eslint:
     enabled: true
+  markdownlint:
+    enabled: false
+  remark-lint:
+    enabled: true
+  semgrep:
+    enabled: true
+
+tools:
+  eslint:
     patterns:
       ESLint8_no-unused-vars:
         enabled: false
@@ -17,10 +26,6 @@ engines:
         enabled: false
       ESLint8_security_detect-non-literal-fs-filename:
         enabled: false
-  markdownlint:
-    enabled: false
-  remark-lint:
-    enabled: true
   semgrep:
     patterns:
       yaml.github-actions.security.third-party-action-not-pinned-to-commit-sha.third-party-action-not-pinned-to-commit-sha:
