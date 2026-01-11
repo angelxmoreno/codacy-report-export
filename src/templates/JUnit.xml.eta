@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Codacy Analysis" tests="<%~ it.issues.length %>" failures="<%~ it.issues.length %>">
+  <testsuite name="<%~ it.escape(it.provider) %>/<%~ it.escape(it.org) %>/<%~ it.escape(it.name) %> PR#<%~ it.prNumber %>" tests="<%~ it.issues.length %>" failures="<%~ it.issues.length %>">
+    <% it.issues.forEach(function(item) { 
+       const message = it.escape(item.commitIssue.message);
+       const category = it.escape(item.commitIssue.patternInfo.category);
+       const file = it.escape(item.commitIssue.filePath);
+       const tool = it.escape(item.commitIssue.toolInfo.name);
+    %>
+    <testcase classname="<%~ file %>" name="[<%~ category %>] <%~ message %>">
+      <failure message="<%~ message %>" type="<%~ item.commitIssue.patternInfo.severityLevel %>">
+File: <%~ file %>:<%~ item.commitIssue.lineNumber %>
+Tool: <%~ tool %>
+Pattern: <%~ item.commitIssue.patternInfo.id %>
+Severity: <%~ item.commitIssue.patternInfo.severityLevel %>
+
+<%~ message %>
+      </failure>
+    </testcase>
+    <% }) %>
+  </testsuite>
+</testsuites>

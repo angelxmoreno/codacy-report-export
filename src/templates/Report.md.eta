@@ -1,0 +1,26 @@
+# Codacy Issue Report
+
+*   **Repository:** `<%= it.provider %>/<%= it.org %>/<%= it.name %>`
+*   **Pull Request:** #<%= it.prNumber %>
+*   **Total Issues:** <%= it.issues.length %>
+
+## Issues List
+
+<% it.issues.forEach(function(item) { %>
+### [<%= item.commitIssue.patternInfo.category %>] <%= item.commitIssue.message %>
+
+*   **File:** `<%= item.commitIssue.filePath %>:<%= item.commitIssue.lineNumber %>`
+*   **Severity:** **<%= item.commitIssue.patternInfo.severityLevel %>**
+*   **Tool:** <%= item.commitIssue.toolInfo.name %>
+*   **Pattern ID:** `<%= item.commitIssue.patternInfo.id %>`
+*   **Delta Type:** <%= item.deltaType %>
+
+<% if (item.commitIssue.suggestion) { %>
+**Suggestion:**
+```<%= item.commitIssue.language ? item.commitIssue.language.toLowerCase() : '' %>
+<%= item.commitIssue.suggestion %>
+```
+<% } %>
+
+---
+<% }) %>

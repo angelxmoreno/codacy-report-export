@@ -27,3 +27,9 @@ History shows Conventional Commit prefixes (`feat`, `fix`, `chore`, etc.); commi
 ## Security & Configuration Tips
 
 Authentication depends on `CODACY_ACCOUNT_TOKEN`; export it in your shell (`export CODACY_ACCOUNT_TOKEN=…`) rather than hardcoding. Never commit tokens—use `.env.local` entries added to `.gitignore` if you must script. When sharing logs, redact PR IDs or repository names from Codacy responses if the project is private.
+
+## Agent Execution Principles
+
+Before editing files or rerouting workflows, confirm intent with the requester and avoid filling gaps with assumptions
+(flags, directory layouts, third-party integrations, etc.). When requirements are ambiguous, pause to ask clarifying
+questions and document the open decisions in the PR or discussion so reviewers can course-correct early.
